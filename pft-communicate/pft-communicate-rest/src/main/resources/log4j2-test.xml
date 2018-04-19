@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN" packages="com.yonyou.iuap.ucc.stellar.core.support.logger" strict="true">
+
+	<Appenders>
+ <Console name="STDOUT" target="SYSTEM_OUT">
+	      <PatternLayout pattern="%m%n"/>
+	    </Console>
+		<RollingFile name="debug-out" fileName="${log4j:configParentLocation}/../logs/debug.log"
+			filePattern="${log4j:configParentLocation}/../logs/debug-%d{yyyy-MM-dd}-%i.log">
+			<PatternLayout pattern="%d{yyyy.MM.dd HH:mm:ss} %c %L - %m%n" />
+			<SizeBasedTriggeringPolicy size="1024KB" />
+			<DefaultRolloverStrategy max="20" />
+			<Filters>
+				<ThresholdFilter level="ERROR" onMatch="DENY" onMismatch="NEUTRAL" />
+				<ThresholdFilter level="WARN" onMatch="DENY" onMismatch="NEUTRAL" />
+				<ThresholdFilter level="INFO" onMatch="DENY" onMismatch="NEUTRAL" />
+				<ThresholdFilter level="DEBUG" onMatch="ACCEPT" onMismatch="DENY" />
+			</Filters>
+		</RollingFile>
+
+		<RollingFile name="info-out" fileName="${log4j:configParentLocation}/../logs/info.log"
+			filePattern="${log4j:configParentLocation}/../logs/info-%d{yyyy-MM-dd}-%i.log">
+			<PatternLayout pattern="%d{yyyy.MM.dd HH:mm:ss} %c %L - %m%n" />
+			<SizeBasedTriggeringPolicy size="10240KB" />
+			<DefaultRolloverStrategy max="99" />
+			<Filters>
+				<ThresholdFilter level="ERROR" onMatch="DENY" onMismatch="NEUTRAL" />
+				<ThresholdFilter level="WARN" onMatch="DENY" onMismatch="NEUTRAL" />
+				<ThresholdFilter level="INFO" onMatch="ACCEPT" onMismatch="DENY" />
+			</Filters>
+		</RollingFile>
+
+		<RollingFile name="warn-out" fileName="${log4j:configParentLocation}/../logs/warn.log"
+			filePattern="${log4j:configParentLocation}/../logs/warn-%d{yyyy-MM-dd}-%i.log">
+			<PatternLayout pattern="%d{yyyy.MM.dd HH:mm:ss} %c %L - %m%n" />
+			<SizeBasedTriggeringPolicy size="10240KB" />
+			<DefaultRolloverStrategy max="99" />
+			<Filters>
+				<ThresholdFilter level="ERROR" onMatch="DENY" onMismatch="NEUTRAL" />
+				<ThresholdFilter level="WARN" onMatch="ACCEPT" onMismatch="DENY" />
+			</Filters>
+		</RollingFile>
+
+		<RollingFile name="error-out" fileName="${log4j:configParentLocation}/../logs/error.log"
+			filePattern="${log4j:configParentLocation}/../logs/error-%d{yyyy-MM-dd}-%i.log">
+			<PatternLayout pattern="%d{yyyy.MM.dd HH:mm:ss} %c %L - %m%n" />
+			<SizeBasedTriggeringPolicy size="10240KB" />
+			<DefaultRolloverStrategy max="99" />
+			<Filters>
+				<ThresholdFilter level="ERROR" onMatch="ACCEPT" onMismatch="DENY" />
+			</Filters>
+		</RollingFile>
+
+	</Appenders>
+
+	<Loggers>
+		<Root level="INFO">
+			<!-- <AppenderRef ref="debug-out" />
+			<AppenderRef ref="info-out" />
+			<AppenderRef ref="warn-out" />
+			<AppenderRef ref="error-out" /> -->
+			<AppenderRef ref="STDOUT"/>
+		</Root>
+
+
+
+		<logger name="org.eclipse.jetty" level="WARN" />
+
+		<Logger name="org.springframework.data.redis.core.RedisConnectionUtils" level="info" />
+
+
+
+		<!-- <Logger name="com.alibaba.dubbo.monitor.dubbo.DubboMonitor" level="WARN" />
+		<Logger name="org.apache.zookeeper.ZooKeeper" level="WARN" /> -->
+
+	</Loggers>
+
+</Configuration>

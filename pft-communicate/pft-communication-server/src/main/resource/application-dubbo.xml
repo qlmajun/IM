@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:tool="http://www.springframework.org/schema/tool"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd
+	http://www.springframework.org/schema/context 
+	http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+	<dubbo:application
+		name="${application.name}"
+		owner="majun"
+		logger="slf4j"
+		organization="collab" />
+
+	<dubbo:registry
+		protocol="${dubbo.registry.protocol}"
+		address="${dubbo.registry.address}"
+		group="${dubbo.registry.group}"
+		file="./dubbooutput/${application.name}/dubbo-registry-${application.name}.cache" />
+
+	<dubbo:protocol
+		name="rmi"
+		port="${dubbo.protocol.port}"
+		threadpool="fixed"
+		queues="0"
+		threads="${dubbo.protocol.threads}"
+		accepts="1000" />
+
+	<!-- queue建议设置为0,使得请求快速失败, 转发到其他服务器处理 -->
+	<dubbo:protocol
+		name="dubbo"
+		port="1${dubbo.protocol.port}"
+		threadpool="fixed"
+		queues="0"
+		threads="${dubbo.protocol.threads}"
+		accepts="1000" />
+
+	<dubbo:provider
+		protocol="${dubbo.protocol.name}"
+		delay="${dubbo.service.delay}"
+		token="false"
+		accesslog="false"
+		buffer="81920"
+		connections="${dubbo.provider.${dubbo.protocol.name}.connections}"
+		timeout="${dubbo.service.timeout}" />
+
+	<!-- dubbo:consumer:connections 每个服务对每个提供者的最大连接数，rmi、http、hessian等短连接协议支持此配置，dubbo协议长连接不支持此配置 -->
+	<dubbo:consumer
+		check="false"
+		cluster="failover"
+		validation="false" />
+
+	<!-- <dubbo:monitor protocol="registry" /> -->
+
+</beans>
